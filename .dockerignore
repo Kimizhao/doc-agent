@@ -1,0 +1,42 @@
+# Virtual Environment
+.venv
+venv
+env
+virtualenv
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+
+# Development and IDE files
+.git
+.github
+.gitignore
+.idea
+.vscode
+*.swp
+*.swo
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Project specific
+notebooks/.ipynb_checkpoints/

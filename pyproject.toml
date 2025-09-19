@@ -1,0 +1,36 @@
+[project]
+name = "doc-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+	"langchain>=0.2.0",
+	"langchain-openai>=0.1.0",
+	"openai>=1.35.0",
+	"python-dotenv>=1.0.0",
+    "langchain-deepseek>=0.1.0",
+    "langchain-ollama>=0.1.0",   # 用于 Ollama 集成
+    "python-docx>=1.0.0",        # 用于读取 .docx 文件
+    "docx2txt>=0.8",             # 用于读取 .doc 文件
+    "pypdf>=3.0.0",              # 用于读取 PDF 文件
+    "unstructured>=0.10.0",      # 用于处理各种文档格式
+    "markdown>=3.5.0",           # 用于处理 Markdown 文件
+    "rich>=13.0.0"               # 用于美化终端输出
+]
+
+[project.optional-dependencies]
+dev = [
+	"ruff>=0.5.0",
+	"pytest>=8.2.0"
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["E", "F", "I", "UP", "B", "SIM", "W"]
+ignore = []
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
