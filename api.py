@@ -98,14 +98,14 @@ async def root():
         "version": "1.0.0",
         "description": "支持多种文件格式的文档结构化分析",
         "endpoints": {
-            "extract_sections": "/extract-sections",
-            "health": "/health",
-            "supported_formats": "/supported-formats",
+            "extract_sections": "/api/python/doc-agent/extract-sections",
+            "health": "/api/python/doc-agent/health",
+            "supported_formats": "/api/python/doc-agent/supported-formats",
         },
     }
 
 
-@app.get("/health", response_model=dict)
+@app.get("/api/python/doc-agent/health", response_model=dict)
 async def health_check():
     """健康检查端点"""
     try:
@@ -122,7 +122,7 @@ async def health_check():
         )
 
 
-@app.get("/supported-formats", response_model=dict)
+@app.get("/api/python/doc-agent/supported-formats", response_model=dict)
 async def get_supported_formats():
     """获取支持的文件格式"""
     initialize_file_chat()
@@ -132,7 +132,9 @@ async def get_supported_formats():
     }
 
 
-@app.post("/extract-sections", response_model=DocumentSectionsResponse)
+@app.post(
+    "/api/python/doc-agent/extract-sections", response_model=DocumentSectionsResponse
+)
 async def extract_document_sections(
     file: UploadFile = File(..., description="要分析的文档文件")
 ):
