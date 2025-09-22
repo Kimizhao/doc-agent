@@ -1,0 +1,22 @@
+
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      platform: linux/amd64
+    image: doc-agent:latest
+    container_name: doc-agent-app
+    restart: unless-stopped
+    ports:
+      - "53518:53518"
+    volumes:
+      - ./:/app
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
