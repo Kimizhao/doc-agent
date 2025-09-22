@@ -8,7 +8,7 @@ def main():
     print("📚 API文档: http://127.0.0.1:53518/docs")
     print("🔧 ReDoc文档: http://127.0.0.1:53518/redoc")
 
-    uvicorn.run("api:app", host="127.0.0.1", port=53518, reload=True, log_level="info")
+    uvicorn.run("api:app", host="0.0.0.0", port=53518, reload=True, log_level="info")
 
 
 if __name__ == "__main__":

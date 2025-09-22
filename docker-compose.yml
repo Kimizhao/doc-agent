@@ -1,13 +1,12 @@
-
-version: '3'
+version: '3.8'
 
 services:
   app:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
-      platform: linux/amd64
-    image: doc-agent:latest
+    image: 192.168.165.28:8083/python/doc-agent:latest
     container_name: doc-agent-app
     restart: unless-stopped
     ports:
