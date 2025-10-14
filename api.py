@@ -8,11 +8,13 @@ import json
 import os
 import tempfile
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 
 from fastapi import FastAPI, File, HTTPException, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from ollama_file_chat import OllamaFileChat, get_env
@@ -30,7 +32,7 @@ class DocumentSection(BaseModel):
 class DocumentSectionsResponse(BaseModel):
     """文档结构提取响应模型"""
 
-    sections: List[DocumentSection] = Field(..., description="文档章节列表")
+    sections: list[DocumentSection] = Field(..., description="文档章节列表")
     file_name: Optional[str] = Field(None, description="文件名")
     file_size: Optional[str] = Field(None, description="文件大小")
     processing_status: str = Field(..., description="处理状态")
@@ -48,8 +50,7 @@ app = FastAPI(
     title="文档一级标题提取助理",
     description="使用AI分析文档，提取一级标题结构的API服务",
     version="1.0.0",
-    docs_url="/docs",
-    redoc_url="/redoc",
+    docs_url=None,
 )
 
 # 配置CORS
@@ -61,8 +62,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 挂载静态文件目录
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+@app.get("/docs", include_in_schema=False)
+async def custom_swagger_ui_html():
+    # 完全离线化Swagger UI，所有资源均指向本地static目录
+    return get_swagger_ui_html(
+        openapi_url=app.openapi_url,
+        title="Swagger UI",
+        swagger_js_url="/static/swagger-ui/swagger-ui-bundle.js",
+        swagger_css_url="/static/swagger-ui/swagger-ui.css",
+    )
+
+
 # 全局变量
-file_chat: Optional[OllamaFileChat] = None
+file_chat: OllamaFileChat | None = None
 
 
 def initialize_file_chat():
@@ -257,6 +273,5 @@ if __name__ == "__main__":
     print(f"🚀 启动文档一级标题提取助理 API")
     print(f"📡 服务地址: http://{host}:{port}")
     print(f"📚 API文档: http://{host}:{port}/docs")
-    print(f"🔧 ReDoc文档: http://{host}:{port}/redoc")
 
     uvicorn.run("api:app", host=host, port=port, reload=True, log_level="info")
